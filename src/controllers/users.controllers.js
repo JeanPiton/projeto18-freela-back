@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import {v4 as uuid} from "uuid"
-import { CreateSession, SignUpRepository, getUserRepository } from "../repositories/user.repository.js"
+import { CreateSession, SignUpRepository, getUserById, getUserRepository } from "../repositories/user.repository.js"
 
 export async function SignUpUser(req,res){
     const {name,email,cpf,telephone,password} = req.body
@@ -23,6 +23,17 @@ export async function SignInUser(req,res){
         const token = uuid()
         await CreateSession(user.id,token)
         res.status(200).send({token})
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
+export async function UserInfo(req,res){
+    const userId = res.locals.session
+
+    try {
+        const {rows:[user]} = await getUserById(userId)
+        res.status(200).send(user)
     } catch (err) {
         res.status(500).send(err.message)
     }

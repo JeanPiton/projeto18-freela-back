@@ -12,3 +12,7 @@ export async function getUserRepository(email){
 export async function CreateSession(userId,token){
     return db.query(`INSERT INTO sessions("userId",token) VALUES ($1,$2)`,[userId,token])
 }
+
+export async function getUserById(userId){
+    return db.query(`SELECT users.name, users.email, users.cpf, users.telephone FROM users WHERE id=$1`,[userId])
+}
