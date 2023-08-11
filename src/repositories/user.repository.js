@@ -16,3 +16,7 @@ export async function CreateSession(userId,token){
 export async function getUserById(userId){
     return db.query(`SELECT users.name, users.email, users.cpf, users.telephone FROM users WHERE id=$1`,[userId])
 }
+
+export async function patchUser(userId,name,email,cpf,telephone){
+    return db.query(`UPDATE users SET name=$1,email=$2,cpf=$3,telephone=$4 WHERE id=$5`,[name,email,cpf,telephone,userId])
+}
