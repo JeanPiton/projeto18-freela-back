@@ -1,4 +1,4 @@
-import { getAllModels, getIdModel } from "../repositories/models.repository.js"
+import { getAllModels, getIdModel, getModelsByUser, getRaces } from "../repositories/models.repository.js"
 
 export async function getModels(req,res){
     const offset = req.query.offset?req.query.offset:0
@@ -18,6 +18,18 @@ export async function getModelById(req,res){
         const {rows:[model]} = await getIdModel(id)
         if(model==undefined) return res.sendStatus(404)
         res.status(200).send(model)
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
+export async function getModelsByUserId(req,res){
+    const userId = res.locals.session
+
+    try {
+        const {rows} = await getModelsByUser(userId)
+        const races = await getRaces()
+        res.status(200).send({models:rows,races:races.rows})
     } catch (err) {
         res.status(500).send(err.message)
     }

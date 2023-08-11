@@ -10,3 +10,11 @@ export async function getIdModel(id){
     JOIN species ON species.id = models."speciesId"
     WHERE models.id=$1`,[id])
 }
+
+export async function getModelsByUser(userId){
+    return db.query(`SELECT models.* FROM models JOIN users ON users.id = models."ownerId" WHERE users.id = $1`,[userId])
+}
+
+export async function getRaces(){
+    return db.query(`SELECT * FROM species`)
+}
