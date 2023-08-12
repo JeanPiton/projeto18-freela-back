@@ -3,11 +3,11 @@ import {v4 as uuid} from "uuid"
 import { CreateSession, SignUpRepository, getUserById, getUserRepository, patchUser } from "../repositories/user.repository.js"
 
 export async function SignUpUser(req,res){
-    const {name,email,cpf,telephone,password} = req.body
+    const {name,email,cpf,telephone,password,image} = req.body
     
     try {
         const hash = bcrypt.hashSync(password,10)
-        await SignUpRepository(name,email,cpf,telephone,hash)
+        await SignUpRepository(name,email,cpf,telephone,hash,image)
         res.sendStatus(201)
     } catch (err) {
         res.status(500).send(err.message)
@@ -41,10 +41,10 @@ export async function UserInfo(req,res){
 
 export async function PatchUserInfo(req,res){
     const userId = res.locals.session
-    const {name,email,cpf,telephone} = req.body
+    const {name,email,cpf,telephone,image} = req.body
 
     try {
-        await patchUser(userId,name,email,cpf,telephone)
+        await patchUser(userId,name,email,cpf,telephone,image)
         res.sendStatus(200)
     } catch (err) {
         res.status(500).send(err.message)
