@@ -3,9 +3,10 @@ import { createNewModel, createRace, getSomeModels, getIdModel, getModelsByUser,
 export async function getModels(req,res){
     const offset = req.query.offset?req.query.offset:0
     const search = req.query.search?req.query.search+"%":"%"
+    const status = req.query.status?"AND active="+req.query.status:""
 
     try {
-        const {rows} = await getSomeModels(offset,search)
+        const {rows} = await getSomeModels(offset,search,status)
         res.status(200).send(rows)
     } catch (err) {
         res.status(500).send(err.message)
