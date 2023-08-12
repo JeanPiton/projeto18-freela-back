@@ -17,7 +17,6 @@ export function validateParamSchema(schema){
 
         if(validation.error){
             const error = validation.error.details.map(detail=>detail.message)
-            console.log(error)
             return res.status(422).send(error)
         }
         next()
