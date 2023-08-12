@@ -35,6 +35,18 @@ export async function getModelsByUserId(req,res){
     }
 }
 
+export async function createModel(req,res){
+    const userId = res.locals.session
+    const {name,image,description,active,race} = req.body
+
+    try {
+        const races = await getRaces()
+        const result = races.rows.filter(e=>e.name==race)
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
 export async function patchUserModel(req,res){
     const userId = res.locals.session
     const {name,image,description,active,race} = req.body
@@ -48,6 +60,8 @@ export async function patchUserModel(req,res){
             raceId = result[0].id
         }else{
             raceId = await createRace(race)
+            raceId = raceId.rows[0].id
+            console.log(raceId)
         }
         await patchModel(name,image,description,active,raceId,id,userId)
         res.sendStatus(200)
