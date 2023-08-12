@@ -18,5 +18,6 @@ export const UserInfoSchema = joi.object({
     name:joi.string().required(),
     email:joi.string().email().required(),
     cpf:joi.string().regex(/^[0-9]{11}$/).required(),
-    telephone:joi.string().regex(/^[0-9]{2}[0-9]{8,9}$/).required()
+    telephone:joi.string().regex(/^[0-9]{2}[0-9]{8,9}$/).required(),
+    image:joi.string().uri().required()
 })
