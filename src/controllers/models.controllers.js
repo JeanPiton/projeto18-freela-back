@@ -4,9 +4,10 @@ export async function getModels(req,res){
     const offset = req.query.offset?req.query.offset:0
     const search = req.query.search?req.query.search+"%":"%"
     const status = req.query.status?"AND active="+req.query.status:""
+    const race = req.query.race?`AND "racesId"=`+req.query.race:""
 
     try {
-        const {rows} = await getSomeModels(offset,search,status)
+        const {rows} = await getSomeModels(offset,search,status,race)
         res.status(200).send(rows)
     } catch (err) {
         res.status(500).send(err.message)
@@ -75,6 +76,15 @@ export async function patchUserModel(req,res){
         }
         await patchModel(name,image,description,active,raceId,id,userId)
         res.sendStatus(200)
+    } catch (err) {
+        res.status(500).send(err.message)
+    }
+}
+
+export async function getAllRaces(req,res){
+    try {
+        const {rows} = await getRaces()
+        res.status(200).send(rows)
     } catch (err) {
         res.status(500).send(err.message)
     }
