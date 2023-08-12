@@ -1,10 +1,11 @@
-import { createNewModel, createRace, getAllModels, getIdModel, getModelsByUser, getRaces, patchModel } from "../repositories/models.repository.js"
+import { createNewModel, createRace, getSomeModels, getIdModel, getModelsByUser, getRaces, patchModel } from "../repositories/models.repository.js"
 
 export async function getModels(req,res){
     const offset = req.query.offset?req.query.offset:0
+    const search = req.query.search?req.query.search+"%":"%"
 
     try {
-        const {rows} = await getAllModels(offset)
+        const {rows} = await getSomeModels(offset,search)
         res.status(200).send(rows)
     } catch (err) {
         res.status(500).send(err.message)

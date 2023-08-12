@@ -1,7 +1,7 @@
 import { db } from "../database/database.connection.js";
 
-export async function getAllModels(offset){
-    return db.query(`SELECT * FROM models ORDER BY id DESC LIMIT 11 OFFSET $1`,[offset])
+export async function getSomeModels(offset,search){
+    return db.query(`SELECT * FROM models WHERE name ILIKE $2 ORDER BY id DESC LIMIT 11 OFFSET $1`,[offset,search])
 }
 
 export async function getIdModel(id){
