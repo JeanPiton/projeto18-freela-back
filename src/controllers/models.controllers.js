@@ -1,4 +1,4 @@
-import { createRace, getAllModels, getIdModel, getModelsByUser, getRaces, patchModel } from "../repositories/models.repository.js"
+import { createNewModel, createRace, getAllModels, getIdModel, getModelsByUser, getRaces, patchModel } from "../repositories/models.repository.js"
 
 export async function getModels(req,res){
     const offset = req.query.offset?req.query.offset:0
@@ -42,6 +42,15 @@ export async function createModel(req,res){
     try {
         const races = await getRaces()
         const result = races.rows.filter(e=>e.name==race)
+        let raceId
+        if(result.length>0){
+            raceId = result[0].id
+        }else{
+            raceId = await createRace(race)
+            raceId = raceId.rows[0].id
+        }
+        await createNewModel(name,image,description,userId,active,raceId)
+        res.sendStatus(201)
     } catch (err) {
         res.status(500).send(err.message)
     }
@@ -61,7 +70,6 @@ export async function patchUserModel(req,res){
         }else{
             raceId = await createRace(race)
             raceId = raceId.rows[0].id
-            console.log(raceId)
         }
         await patchModel(name,image,description,active,raceId,id,userId)
         res.sendStatus(200)

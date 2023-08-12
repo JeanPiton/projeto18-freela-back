@@ -28,3 +28,8 @@ export async function patchModel(name,image,description,active,raceId,id,userId)
         SET name=$1,image=$2,description=$3,active=$4,"speciesId"=$5 
         WHERE id=$6 AND "ownerId"=$7`,[name,image,description,active,raceId,id,userId])
 }
+
+export async function createNewModel(name,image,description,userId,active,raceId){
+    return db.query(`INSERT INTO models(name,image,description,"ownerId",active,"speciesId") 
+        VALUES ($1,$2,$3,$4,$5,$6)`,[name,image,description,userId,active,raceId])
+}
